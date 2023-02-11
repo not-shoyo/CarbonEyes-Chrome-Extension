@@ -29,4 +29,3 @@ setTimeout(chrome.tabs.query({active: true, currentWindow: true}, function(tabs)
       });
     });
   }), 1000);
-  

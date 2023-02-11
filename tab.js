@@ -26,6 +26,6 @@ function getDataTransferredTillNow() {
   // Use the sendMessageToBackgroundScript function to send a message to the background script
 setInterval(()=>
 {
-  var size = getDataTransferredTillNow() + "url : "+ window.location.href + ""
-  sendMessageToBackgroundScript(size)
+  var data = JSON.stringify({size:getDataTransferredTillNow() , url :  window.location.href })
+  sendMessageToBackgroundScript(data)
 }, 3000);
