@@ -6,11 +6,21 @@
     "permissions": [
       "debugger",
       "activeTab",
-      "tabs"
+      "tabs",
+      "scripting"
     ],
     "action": {
       "default_popup": "popup.html"
-    }
+    },
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://*/*"],
+        "js": ["tab.js"]
+      }
+    ]
   }
   
   

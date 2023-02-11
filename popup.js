@@ -19,13 +19,12 @@ setTimeout(chrome.tabs.query({active: true, currentWindow: true}, function(tabs)
         // Return the total amount of data transferred
         return totalSize;
       })()`}, function(result) {
+        console.log(result.result.value)
         // Update the total-size div with the total amount of data transferred
         document.getElementById("total-size").innerText = "Total data transferred: " + result.result.value + " bytes";
         if(!!!localStorage.getItem("foot-print-co2")){
-            localStorage.setItem("")
         }
         else{
-            localStorage.setItem("")
         }
       });
     });
