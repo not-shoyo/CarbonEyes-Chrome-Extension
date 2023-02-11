@@ -141,6 +141,10 @@ function refreshData() {
       finalData = finalData.slice().sort((a, b) => b.emmision - a.emmision);
     }
 
+    //for plotting into pie chart
+    var contribArray = []
+    var domainLabelArray = []
+
     rowIndex = 1;
     finalData.forEach((domainToData) => {
       const tableRow = document.createElement("div");
@@ -239,6 +243,53 @@ function refreshData() {
       totalData += finalData[i].emmision;
     }
 
+    //set emmissions thing to document
+    document.getElementById("totalEmmisions").innerText = totalData + "g"
+
+
+    // var data = [{
+    //   values: contribArray,
+    //   labels: domainLabelArray,
+    //   type: 'pie'
+    // }];
+
+    finalData.forEach((domainToData)=>{
+      contribArray.push(domainToData.size / totalData )
+      domainLabelArray.push(domainToData.domain)
+    })
+
+    console.log(contribArray, domainLabelArray, finalData)
+    var data = [{
+      values: contribArray,
+      labels: domainLabelArray,
+      domain: {column: 0},
+      name: 'GHG Emissions',
+      hoverinfo: 'label+percent',
+      hole: .4,
+      type: 'pie'
+    }]
+    
+    
+    var layout = {
+      title: 'Your Carbon Emissions Distributions accross websites',
+      annotations: [
+        {
+          font: {
+            size: 20
+          },
+          showarrow: false,
+          text: 'CO2',
+          x: 0.5,
+          y: 0.5
+        }
+      ],
+      height: 400,
+      width: 600,
+      showlegend: false,
+    };
+
+    Plotly.newPlot('donut', data, layout);
+
     if (totalDataMatrix.length < 2) {
       totalDataMatrix.push(totalData);
     } else {
@@ -266,7 +317,7 @@ function getData() {
 
 let layout = {
   title: {
-    text: "Δ Emission",
+    text: "Δ Emission vs Time",
     font: {
       family: "Times New Roman",
       size: 24,
@@ -308,6 +359,7 @@ setInterval(function () {
     });
   }
 }, 15);
+
 setInterval(refreshData, 1000);
 
 // chrome.storage.local.get("data", (data)=>{
