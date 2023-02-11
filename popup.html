@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <style>
-      #total-size {
-        font-size: 14px;
-        font-weight: bold;
-        text-align: center;
-      }
-    </style>
+    <link rel="stylesheet" href="popupStyle.css" />
   </head>
   <body>
-    <div id="total-size">Loading...</div>
-    <a id="link" href="#">Open Page</a>
+    <div id="popup">
+      <div id="loading-div">Loading...</div>
+      <div class="main-header">
+        <div id="dataTransfer" class="main__total-blocked-tab">Data Transfered: 3</div>
+        <div id="emissions" class="main__total-blocked-all">Current Emission: 283,764</div>
+      </div>
+      <a id="link" class="button-30" href="#">See Your Stats</a>
+    </div>
     <script src="popup.js"></script>
     <script src="openNewPage.js"></script>
   </body>
