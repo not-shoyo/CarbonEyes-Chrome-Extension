@@ -25,8 +25,10 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       })()`,
       },
       function (result) {
-        // Update the total-size div with the total amount of data transferred
-        document.getElementById("total-size").innerText = "Total data transferred: " + result.result.value + " bytes";
+        // Update the dataTransfer div with the total amount of data transferred
+        document.getElementById("loading-div").style.display = "none";
+        document.getElementById("dataTransfer").innerText = `Data Transfered: ${result.result.value} bytes`;
+        // "Total data transferred: " + result.result.value + " bytes";
         console.log(localStorage);
         if (localStorage.length === 0) {
           localStorage.setItem("emissionsData", []);
