@@ -1,25 +1,19 @@
 {
-    "manifest_version": 3,
-    "name": "Data Transfer Monitor",
-    "version": "1.0",
-    "description": "Shows the total amount of data transferred on the active tab",
-    "permissions": [
-      "debugger",
-      "activeTab",
-      "tabs",
-      "scripting"
-    ],
-    "action": {
-      "default_popup": "popup.html"
-    },
-    "background": {
-      "service_worker": "background.js"
-    },
-    "content_scripts": [
-      {
-        "matches": ["https://*/*"],
-        "js": ["tab.js"]
-      }
-    ]
-  }
+  "manifest_version": 3,
+  "name": "Data Transfer Monitor",
+  "version": "1.0",
+  "description": "Shows the total amount of data transferred on the active tab",
+  "permissions": ["debugger", "activeTab", "tabs", "scripting"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*/*"],
+      "js": ["tab.js"]
+    }
+  ]
 }
