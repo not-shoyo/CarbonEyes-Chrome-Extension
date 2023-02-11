@@ -1,6 +1,7 @@
 
 let tableData = new Map();
 let existingDomains = new Set();
+let existingTabs = new Set();
 
 var totalDataMatrix = []
 var totalData = 0
@@ -138,15 +139,63 @@ function refreshData() {
 
     rowIndex = 1
     finalData.forEach((domainToData) => {
-        const tableRow = document.createElement("tr");
-        const rowNum = document.createElement("td");
-        const rowDomainName = document.createElement("td");
-        const rowSize = document.createElement("td");
-        const rowEmission = document.createElement("td");
-        const rowClassification = document.createElement("td");
+        const tableRow = document.createElement("div");
+        const rowBtn = document.createElement("button");
+        const rowNum = document.createElement("span");
+        const rowDomainName = document.createElement("span");
+        const rowSize = document.createElement("span");
+        const rowEmission = document.createElement("span");
+        const rowClassification = document.createElement("span");
         
-        rowNum.innerText = rowIndex
-        rowIndex++;
+        tableRow.className = "custom-row";
+        rowBtn.className = "custom-accordion-button";
+        rowBtn.value = domain;
+        rowBtn.innerText = "Expand";
+        
+        const rowPanel = document.createElement("div");
+        rowPanel.className = "custom-toggle-able-panel";
+        rowPanel.id = domain;
+        
+        let totalSize = 0;
+        let totalEmission = 0;
+        
+        tabsMapping.forEach((record, tab) => {
+          existingTabs.add(tab);
+          totalSize += record.size;
+          totalEmission += record.cumulativeEmission;
+
+          const subRow = document.createElement("div");
+          const subRowUrl = document.createElement("span");
+          const subRowSize = document.createElement("span");
+          const subRowEmission = document.createElement("span");
+
+          subRow.className = "custom-row";
+          subRowUrl.className = "sub-row-url";
+          subRowSize.className = "sub-row-size";
+
+          subRowUrl.innerText = record.url;
+          subRowSize.innerText = record.size;
+          subRowEmission.innerText = record.cumulativeEmission;
+
+          subRow.appendChild(document.createElement("span"));
+          subRow.appendChild(document.createElement("span"));
+          subRow.appendChild(subRowUrl);
+          subRow.appendChild(subRowSize);
+          subRow.appendChild(subRowEmission);
+
+          rowPanel.appendChild(subRow);
+        });
+        
+        rowBtn.onclick = (e) => {
+          var panel = rowPanel;
+          if (panel.style.display === "flex") {
+            panel.style.display = "none";
+          } else {
+            panel.style.display = "flex";
+          }
+        };
+        
+        rowNum.innerText = rowIndex++;
         rowDomainName.innerText = domainToData.domain
         rowSize.innerText = domainToData.size
         rowEmission.innerText = domainToData.emmision
@@ -164,12 +213,14 @@ function refreshData() {
           rowClassification.style.color = "green"
         }
 
+        tableRow.appendChild(rowBtn);
         tableRow.appendChild(rowNum);
         tableRow.appendChild(rowDomainName);
         tableRow.appendChild(rowSize);
         tableRow.appendChild(rowEmission);
         tableRow.appendChild(rowClassification);
         tableBody.appendChild(tableRow);
+        tableBody.appendChild(rowPanel);
     })
 
     totalData=0
@@ -183,54 +234,13 @@ function refreshData() {
       totalDataMatrix[0] = totalDataMatrix[1]
       totalDataMatrix[1] = totalData
     }
-
-
-
-    // tableData.forEach(({ idx, tabsMapping }, domain) => {
-    //   if (!existingDomains.has(domain)) {
-    //     existingDomains.add(domain);
-
-    //     const tableRow = document.createElement("tr");
-    //     const rowNum = document.createElement("td");
-    //     const rowDomainName = document.createElement("td");
-    //     const rowSize = document.createElement("td");
-    //     const rowEmission = document.createElement("td");
-
-    //     let totalSize = 0;
-    //     let totalEmission = 0;
-
-    //     tabsMapping.forEach((record, tabs) => {
-    //       totalSize += record.size;
-    //       totalEmission += record.cumulativeEmission;
-    //     });
-
-    //     rowNum.innerText = idx + 1;
-    //     rowDomainName.innerText = domain;
-    //     rowSize.innerText = totalSize;
-    //     // rowEmission.innerText = totalEmission;
-    //     rowEmission.innerText = findEmission(totalSize);
-
-    //     tableRow.appendChild(rowNum);
-    //     tableRow.appendChild(rowDomainName);
-    //     tableRow.appendChild(rowSize);
-    //     tableRow.appendChild(rowEmission);
-    //     tableBody.appendChild(tableRow);
-    //   } else {
-    //       const tableRow = tableBody.children[idx];
-    //       if( tableRow ){
-    //         let totalSize = 0;
-    //         let totalEmission = 0;
-    //         tabsMapping.forEach((record, tabs) => {
-    //           totalSize += record.size;
-    //           totalEmission += record.cumulativeEmission;
-    //         });
-    //         tableRow.children[2].innerText = totalSize;
-    //         tableRow.children[3].innerText = findEmission(totalSize);
-    //     }
-    //   }
-    // });
   });
 }
+function getData() {
+  return Math.random();
+}  
+
+Plotly.newPlot('chart',[{ y:[getData()],type:'line' }]);
 
 function getTotalEmission() {
   if(totalDataMatrix.length >=2 || !((totalDataMatrix[1] - totalDataMatrix[0])<0)){
@@ -280,7 +290,6 @@ let layout ={
 }
 
 Plotly.newPlot('chart',[{ y:[getTotalEmission()],type:'line' }], layout);
-
 var cnt = 0;
 
 setInterval(function(){
@@ -295,9 +304,29 @@ setInterval(function(){
       });
   }
 },15);
-
-setInterval(refreshData, 100);
+setInterval(refreshData, 1000);
 
 // chrome.storage.local.get("data", (data)=>{
 // console.log(JSON.parse(data))
 //})
+
+// var buttons = document.getElementsByClassName("custom-accordion-button");
+// var allPanels = document.getElementsByClassName("custom-toggle-able-panel");
+
+// // console.log(buttons);
+// // console.log(allPanels);
+
+// var i;
+
+// for (i = 0; i < buttons.length; i++) {
+//   buttons[i].addEventListener("click", (e) => {
+//     var panel = document.getElementById(e.target.value);
+
+//     // console.log(panel);
+//     if (panel.style.display === "flex") {
+//       panel.style.display = "none";
+//     } else {
+//       panel.style.display = "flex";
+//     }
+//   });
+// }
