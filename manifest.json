@@ -3,7 +3,7 @@
   "name": "Data Transfer Monitor",
   "version": "1.0",
   "description": "Shows the total amount of data transferred on the active tab",
-  "permissions": ["debugger", "activeTab", "tabs", "scripting"],
+  "permissions": ["debugger", "activeTab", "tabs", "scripting", "storage"],
   "action": {
     "default_popup": "popup.html"
   },
