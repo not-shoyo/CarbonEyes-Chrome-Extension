@@ -137,7 +137,7 @@ function refreshData() {
   });
 }
 
-setInterval(refreshData, 3000);
+setInterval(refreshData, 1000);
 
 // chrome.storage.local.get("data", (data)=>{
 // console.log(JSON.parse(data))

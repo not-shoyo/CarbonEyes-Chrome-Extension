@@ -27,7 +27,13 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       function (result) {
         // Update the dataTransfer div with the total amount of data transferred
         document.getElementById("loading-div").style.display = "none";
-        document.getElementById("dataTransfer").innerText = `Data Transfered: ${result.result.value} bytes`;
+        document.getElementById("main-header").style.display = "flex";
+        // document.getElementById("dataTransfer").innerText = `Data Transfered: ${result.result.value} bytes`;
+        document.getElementById("dataTransfer").innerText = `${Number((result.result.value / 1000.0).toFixed(5))} KB`;
+        // document.getElementById("emissions").innerText = `Current Emission: ${Number(
+        //   ((result.result.value * 0.81 * 0.75 * 442) / 1000000000.0).toFixed(5)
+        // )} grams`;
+        document.getElementById("emissions").innerText = `${Number(((result.result.value * 0.81 * 0.75 * 442) / 1000000000.0).toFixed(5))} grams`;
         // "Total data transferred: " + result.result.value + " bytes";
         console.log(localStorage);
         if (localStorage.length === 0) {
@@ -43,5 +49,5 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         // }
       }
     );
-  }); 
+  });
 });
