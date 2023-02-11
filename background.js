@@ -12,8 +12,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   };
 
   chrome.storage.local.get("data", (dataRn) => {
+
     //console.log(dataRn.data)
-    let data = dataRn.data;
+    let data = dataRn.data? dataRn.data:[];
+
     data.push(addedData);
     chrome.storage.local.set({ data: data });
   });
@@ -21,5 +23,5 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   const stringData = JSON.stringify(addedData);
 
   //sendResponse({ message: "Hello from the background script!" });
-  chrome.runtime.sendMessage({ message: stringData });
+  //chrome.runtime.sendMessage({ message: stringData });
 });
