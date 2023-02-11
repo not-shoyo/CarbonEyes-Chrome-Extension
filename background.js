@@ -12,6 +12,6 @@
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     console.log(JSON.parse(request.message));
-    localStorage.setItem("xcvxvc",request.message )
     sendResponse({ message: "Hello from the background script!" });
+    chrome.runtime.sendMessage(request.message);
   });
