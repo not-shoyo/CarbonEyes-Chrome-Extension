@@ -1,6 +1,9 @@
 
 let tableData = new Map();
 let existingDomains = new Set();
+
+var totalDataMatrix = []
+var totalData = 0
 // chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 //   if (request.message) {
 //     const data = JSON.parse(request.message);
@@ -169,6 +172,20 @@ function refreshData() {
         tableBody.appendChild(tableRow);
     })
 
+    totalData=0
+    for(i=0;i<finalData.length;i++) {
+      totalData+= finalData[i].emmision
+    }
+
+    if(totalDataMatrix.length < 2) {
+      totalDataMatrix.push(totalData)
+    }else {
+      totalDataMatrix[0] = totalDataMatrix[1]
+      totalDataMatrix[1] = totalData
+    }
+
+
+
     // tableData.forEach(({ idx, tabsMapping }, domain) => {
     //   if (!existingDomains.has(domain)) {
     //     existingDomains.add(domain);
@@ -215,7 +232,71 @@ function refreshData() {
   });
 }
 
-setInterval(refreshData, 1000);
+function getTotalEmission() {
+  if(totalDataMatrix.length >=2 || !((totalDataMatrix[1] - totalDataMatrix[0])<0)){
+    if ( ((totalDataMatrix[1] - totalDataMatrix[0])) >0)
+      return ((totalDataMatrix[1] - totalDataMatrix[0]))
+    else
+      return 0;
+  }
+    
+  else
+    return 0;
+}
+
+function getData() {
+  return Math.random();
+}  
+
+
+let layout ={
+  title: {
+  text:'Δ Emission',
+  font: {
+  family: 'Times New Roman',
+  size: 24
+  },
+  },
+  xaxis: {
+    title: {
+    text: 'Time',
+    font: {
+    family: 'Courier New, monospace',
+    size: 18,
+    color: '#7f7f7f'
+    }
+    }
+    },
+    yaxis: {
+    title: {
+    text: 'Increase in Emission',
+    font: {
+    family: 'Courier New, monospace',
+    size: 18,
+    color: '#7f7f7f'
+    }
+    }
+}
+}
+
+Plotly.newPlot('chart',[{ y:[getTotalEmission()],type:'line' }], layout);
+
+var cnt = 0;
+
+setInterval(function(){
+
+  Plotly.extendTraces('chart',{ y:[[getTotalEmission()]]}, [0]);
+  cnt++;
+  if(cnt > 500) {
+      Plotly.relayout('chart',{
+          xaxis: {
+              range: [cnt-500,cnt]
+          }
+      });
+  }
+},15);
+
+setInterval(refreshData, 100);
 
 // chrome.storage.local.get("data", (data)=>{
 // console.log(JSON.parse(data))
