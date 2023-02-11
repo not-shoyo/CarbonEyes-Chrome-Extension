@@ -1,4 +1,5 @@
 let tableData = new Map();
+let existingDomains = new Set();
 
 // chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 //   if (request.message) {
@@ -57,18 +58,15 @@ findReEmission = (data) => {
 function refreshData() {
   chrome.storage.local.get("data", (message) => {
     if (message) console.log(message);
-    // document.getElementById("dataType").innerHTML = JSON.stringify(message)
-    // const parsedMessage = JSON.parse(message);
 
     message["data"].forEach((data) => {
-      // data = JSON.parse(m);
       console.log(data);
       const { url, size, tab } = data;
 
       const domainName = new URL(url).hostname;
 
       if (tableData.has(domainName)) {
-        const domain = tableData.get(domainName);
+        const domain = tableData.get(domainName).tabsMapping;
         if (!domain.has(tab)) {
           domain.set(tab, { size, emission: findReEmission(size), cumulativeEmission: findReEmission(size), url });
         } else {
@@ -82,52 +80,60 @@ function refreshData() {
           });
         }
       } else {
-        tableData.set(domainName, new Map());
-        const domain = tableData.get(domainName);
+        tableData.set(domainName, { idx: tableData.size, tabsMapping: new Map() });
+        const domain = tableData.get(domainName).tabsMapping;
         domain.set(tab, { size, emission: findEmission(size), cumulativeEmission: findEmission(size), url });
       }
-
-      // const idx = tableData.findIndex((td) => {
-      //   return new RegExp(td.domainName, "g").test(domainName);
-      // });
-      // console.log(url, size, domainName, idx);
     });
     const tableBody = document.getElementById("tableBody");
 
-    tableData.forEach((value, key) => {});
-
-    if (idx !== -1) {
-      if (tableData[idx]["tabs"].findIndex(tab) === -1) {
-        tableRow.children[4].innerHTML = tableData[idx]["emission"] + findEmission(size);
-      }
-      tableData[idx]["dataTransfer"] += size;
-      tableData[idx]["emission"] += findReEmission(findEmission(size));
-      const tableRow = tableBody.children[idx];
-      tableRow.children[3].innerHTML = tableData[idx]["dataTransfer"];
-      tableRow.children[4].innerHTML = tableData[idx]["emission"];
-    } else {
-      tableData.push({ domainName, url, dataTransfer: size, emission: findEmission(size), tabs: [tab] });
-      const tableRow = document.createElement("tr");
-      const rowNum = document.createElement("td");
-      const rowDomainName = document.createElement("td");
-      const rowUrl = document.createElement("td");
-      const rowSize = document.createElement("td");
-      const rowEmission = document.createElement("td");
-      rowNum.innerText = tableBody.children.length + 1;
-      rowDomainName.innerText = domainName;
-      rowUrl.innerText = url;
-      rowSize.innerText = size;
-      rowEmission.innerText = findEmission(size);
-
-      tableRow.appendChild(rowNum);
-      tableRow.appendChild(rowDomainName);
-      tableRow.appendChild(rowUrl);
-      tableRow.appendChild(rowSize);
-      tableRow.appendChild(rowEmission);
-      tableBody.appendChild(tableRow);
-    }
-
     console.log(tableData);
+
+    tableData.forEach(({ idx, tabsMapping }, domain) => {
+      if (!existingDomains.has(domain)) {
+        existingDomains.add(domain);
+
+        const tableRow = document.createElement("tr");
+        const rowNum = document.createElement("td");
+        const rowDomainName = document.createElement("td");
+        const rowSize = document.createElement("td");
+        const rowEmission = document.createElement("td");
+
+        let totalSize = 0;
+        let totalEmission = 0;
+
+        tabsMapping.forEach((record, tabs) => {
+          totalSize += record.size;
+          totalEmission += record.cumulativeEmission;
+        });
+
+        rowNum.innerText = idx + 1;
+        rowDomainName.innerText = domain;
+        rowSize.innerText = totalSize;
+        // rowEmission.innerText = totalEmission;
+        rowEmission.innerText = findEmission(totalSize);
+
+        tableRow.appendChild(rowNum);
+        tableRow.appendChild(rowDomainName);
+        tableRow.appendChild(rowSize);
+        tableRow.appendChild(rowEmission);
+        tableBody.appendChild(tableRow);
+      } else {
+        const tableRow = tableBody.children[idx];
+
+        let totalSize = 0;
+        let totalEmission = 0;
+
+        tabsMapping.forEach((record, tabs) => {
+          totalSize += record.size;
+          totalEmission += record.cumulativeEmission;
+        });
+
+        tableRow.children[2].innerText = totalSize;
+        // tableRow.children[3].innerText = totalEmission;
+        tableRow.children[3].innerText = findEmission(totalSize);
+      }
+    });
   });
 }
 
