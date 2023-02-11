@@ -28,6 +28,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 3px;
 }
 
 .custom-row > * {
@@ -41,7 +42,18 @@ body {
 }
 
 #header-row:nth-child(2) {
-  margin-left: 16%;
+  margin-left: 10%;
+}
+
+.custom-accordion-button {
+  border: none;
+  background: none;
+  /* padding: 3px 6px; */
+  /* background-color: #131313;
+  color: #d8d8d8;
+  box-shadow: inset 2px 2px 2px rgb(228, 228, 228); */
+  /* background-color: #4caf50; Green */
+  color: white;
 }
 
 .custom-toggle-able-panel {
@@ -63,5 +75,24 @@ body {
 
 .sub-row-url {
   width: 160px;
-  overflow-wrap: anywhere;
+  /* overflow-wrap: anywhere; */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  /* text-overflow: ellipsis; */
+}
+
+.green-ify {
+  box-shadow: inset 0 0 25px rgba(172, 255, 47, 0.556);
+}
+
+.red-ify {
+  /* background-color: red; */
+  box-shadow: inset 0 0 25px rgba(255, 0, 0, 0.483);
+  /* box-shadow: inset 0 0 20px gold; */
+}
+
+.yellow-ify {
+  box-shadow: inset 0 0 25px rgba(255, 255, 0, 0.419);
 }

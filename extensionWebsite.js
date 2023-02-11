@@ -152,7 +152,7 @@ function refreshData() {
       const rowClassification = document.createElement("span");
 
       tableRow.className = "custom-row";
-      rowBtn.className = "custom-accordion-button";
+      rowBtn.className = "custom-accordion-button button-expand";
       rowBtn.value = domainToData.domain;
       rowBtn.innerText = "Expand";
 
@@ -217,12 +217,37 @@ function refreshData() {
         rowClassification.innerHTML = "Non Green";
         rowClassification.style.color = "red";
       } else if (emiPerTab > 0.5) {
-        rowClassification.innerText = "Semi green";
-        rowClassification.style.color = "blue";
+        rowClassification.innerText = "Semi Green";
+        rowClassification.style.color = "yellow";
       } else {
         rowClassification.innerText = "Green";
         rowClassification.style.color = "green";
       }
+
+      tableRow.onmouseover = () => {
+        if (rowClassification.innerText === "Green") {
+          tableRow.classList.remove("yellow-ify");
+          tableRow.classList.remove("red-ify");
+          tableRow.classList.add("green-ify");
+          rowPanel.classList.remove("yellow-ify");
+          rowPanel.classList.remove("red-ify");
+          rowPanel.classList.add("green-ify");
+        } else if (rowClassification.innerText === "Semi Green") {
+          tableRow.classList.remove("red-ify");
+          tableRow.classList.remove("green-ify");
+          tableRow.classList.add("yellow-ify");
+          rowPanel.classList.remove("red-ify");
+          rowPanel.classList.remove("green-ify");
+          rowPanel.classList.add("yellow-ify");
+        } else {
+          tableRow.classList.remove("green-ify");
+          tableRow.classList.remove("yellow-ify");
+          tableRow.classList.add("red-ify");
+          rowPanel.classList.remove("green-ify");
+          rowPanel.classList.remove("yellow-ify");
+          rowPanel.classList.add("red-ify");
+        }
+      };
 
       tableRow.appendChild(rowBtn);
       tableRow.appendChild(rowNum);
