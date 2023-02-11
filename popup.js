@@ -1,9 +1,13 @@
 // Get the active tab
-setTimeout(chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    // Attach the debugger to the tab
-    chrome.debugger.attach({tabId: tabs[0].id}, "1.0", function() {
-      // Inject a script into the tab to calculate the total data transferred
-      chrome.debugger.sendCommand({tabId: tabs[0].id}, "Runtime.evaluate", {expression: `(function() {
+chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+  // Attach the debugger to the tab
+  chrome.debugger.attach({ tabId: tabs[0].id }, "1.0", function () {
+    // Inject a script into the tab to calculate the total data transferred
+    chrome.debugger.sendCommand(
+      { tabId: tabs[0].id },
+      "Runtime.evaluate",
+      {
+        expression: `(function() {
         // Total amount of data transferred
         var totalSize = 0;
   
@@ -18,16 +22,24 @@ setTimeout(chrome.tabs.query({active: true, currentWindow: true}, function(tabs)
   
         // Return the total amount of data transferred
         return totalSize;
-      })()`}, function(result) {
+      })()`,
+      },
+      function (result) {
         // Update the total-size div with the total amount of data transferred
         document.getElementById("total-size").innerText = "Total data transferred: " + result.result.value + " bytes";
-        if(!!!localStorage.getItem("foot-print-co2")){
-            localStorage.setItem("")
+        console.log(localStorage);
+        if (localStorage.length === 0) {
+          localStorage.setItem("emissionsData", []);
         }
-        else{
-            localStorage.setItem("")
-        }
-      });
-    });
-  }), 1000);
-  
+        let emissionsData = localStorage.getItem("emissionsData");
+        let newEmissionsData = [emissionsData, { dataTransfered: result.result.value }];
+        localStorage.setItem("emissionsData", newEmissionsData);
+        // if (!!!localStorage.getItem("foot-print-co2")) {
+        //   localStorage.setItem("");
+        // } else {
+        //   localStorage.setItem("");
+        // }
+      }
+    );
+  });
+});
