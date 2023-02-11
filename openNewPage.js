@@ -8,6 +8,6 @@ window.onload = () => {
     // window.open("https://www.nitk.ac.in/", "_blank");
 
     // linking to local file
-    window.open("index.html", "_blank");
+    window.open("index.html", "_blank"); 
   });
 };

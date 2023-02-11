@@ -2,7 +2,7 @@ console.log("Script injected into new tab: " + window.location.href);
 
 function sendMessageToBackgroundScript(message) {
     chrome.runtime.sendMessage({ message: message }, function(response) {
-      console.log(response.message);
+       console.log(response.message);
     });
   }
 
