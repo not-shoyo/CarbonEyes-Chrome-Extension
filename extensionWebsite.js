@@ -1,7 +1,10 @@
+
 let tableData = new Map();
 let existingDomains = new Set();
 let existingTabs = new Set();
 
+var totalDataMatrix = []
+var totalData = 0
 // chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 //   if (request.message) {
 //     const data = JSON.parse(request.message);
@@ -56,12 +59,26 @@ findReEmission = (data) => {
   return data * 0.25 * 2;
 };
 
+document.getElementById("clearHistory").addEventListener('click',clearData);
+
+async function clearData()  {
+  existingDomains = new Set()
+  tableData = new Map();
+  tobeSetTo = {data: []}
+  chrome.storage.local.set(tobeSetTo, chrome.storage.local.get("data", (message) => console.log(message) ))
+}
+
 function refreshData() {
   chrome.storage.local.get("data", (message) => {
-    if (message) console.log(message);
+
+    existingDomains = new Set()
+    tableData = new Map();
+
+    if(JSON.stringify(message)===JSON.stringify({})) return;
 
     message["data"].forEach((data) => {
-      console.log(data);
+
+      //console.log(data);
       const { url, size, tab } = data;
 
       const domainName = new URL(url).hostname;
@@ -82,37 +99,66 @@ function refreshData() {
         }
       } else {
         tableData.set(domainName, { idx: tableData.size, tabsMapping: new Map() });
-        const domain = tableData.get(domainName).tabsMapping;
+        var domain = tableData.get(domainName).tabsMapping;
         domain.set(tab, { size, emission: findEmission(size), cumulativeEmission: findEmission(size), url });
       }
     });
 
-    const tableBody = document.getElementById("tableBody");
+    var tableBody = document.getElementById("tableBody");
 
-    console.log(tableData);
+    //remove add tablebody
+    while (tableBody.firstChild) {
+      tableBody.firstChild.remove()
+    }
+    var finalData = new Map()
 
     tableData.forEach(({ idx, tabsMapping }, domain) => {
-      if (!existingDomains.has(domain)) {
-        existingDomains.add(domain);
+      //compute total data transfer size
+      let allSize =0 ;
+      tabsMapping.forEach((val, key)=>{allSize += val.size})
 
+      finalData.set(domain,  {
+        domain: domain,
+        size : allSize,
+        emmision: findEmission(allSize),
+        numberOfTabs: tabsMapping.size
+      })
+    })
+
+    //console.log(tableBody, finalData, message.data)
+
+    finalData = [...finalData.values()]
+
+    if(document.getElementById("flexCheckDefault").checked) {
+      finalData.sort(function (a, b) {
+        return a.emmission - b.emmission;
+      });
+  
+      finalData = finalData.slice().sort((a, b) => b.emmision - a.emmision);
+    }
+
+    rowIndex = 1
+    finalData.forEach((domainToData) => {
         const tableRow = document.createElement("div");
         const rowBtn = document.createElement("button");
         const rowNum = document.createElement("span");
         const rowDomainName = document.createElement("span");
         const rowSize = document.createElement("span");
         const rowEmission = document.createElement("span");
-
+        const rowClassification = document.createElement("span");
+        
         tableRow.className = "custom-row";
         rowBtn.className = "custom-accordion-button";
         rowBtn.value = domain;
-
+        rowBtn.innerText = "Expand";
+        
         const rowPanel = document.createElement("div");
         rowPanel.className = "custom-toggle-able-panel";
         rowPanel.id = domain;
-
+        
         let totalSize = 0;
         let totalEmission = 0;
-
+        
         tabsMapping.forEach((record, tab) => {
           existingTabs.add(tab);
           totalSize += record.size;
@@ -139,7 +185,7 @@ function refreshData() {
 
           rowPanel.appendChild(subRow);
         });
-
+        
         rowBtn.onclick = (e) => {
           var panel = rowPanel;
           if (panel.style.display === "flex") {
@@ -148,64 +194,46 @@ function refreshData() {
             panel.style.display = "flex";
           }
         };
-
-        rowBtn.innerText = "Expand";
-        rowNum.innerText = idx + 1;
-        rowDomainName.innerText = domain;
-        rowSize.innerText = totalSize;
-        rowEmission.innerText = findEmission(totalSize);
+        
+        rowNum.innerText = rowIndex++;
+        rowDomainName.innerText = domainToData.domain
+        rowSize.innerText = domainToData.size
+        rowEmission.innerText = domainToData.emmision
+        const emiPerTab  = domainToData.emmision/domainToData.numberOfTabs
+        if(emiPerTab>1 ){
+          rowClassification.innerHTML = "Non Green"
+          rowClassification.style.color = "red"
+        }
+        else if(emiPerTab >0.5){
+          rowClassification.innerText = "Semi green"
+          rowClassification.style.color = "blue"
+        }
+        else{
+          rowClassification.innerText = "Green"
+          rowClassification.style.color = "green"
+        }
 
         tableRow.appendChild(rowBtn);
         tableRow.appendChild(rowNum);
         tableRow.appendChild(rowDomainName);
         tableRow.appendChild(rowSize);
         tableRow.appendChild(rowEmission);
+        tableRow.appendChild(rowClassification);
         tableBody.appendChild(tableRow);
         tableBody.appendChild(rowPanel);
-      } else {
-        const tableRow = tableBody.children[idx];
+    })
 
-        const rowPanel = document.getElementById(domain);
-        // rowPanel.innerHTML = "";
+    totalData=0
+    for(i=0;i<finalData.length;i++) {
+      totalData+= finalData[i].emmision
+    }
 
-        let totalSize = 0;
-        let totalEmission = 0;
-
-        tabsMapping.forEach((record, tab) => {
-          totalSize += record.size;
-          totalEmission += record.cumulativeEmission;
-
-          if (!existingTabs.has(tab)) {
-            existingTabs.add(tab);
-
-            const subRow = document.createElement("div");
-            const subRowUrl = document.createElement("span");
-            const subRowSize = document.createElement("span");
-            const subRowEmission = document.createElement("span");
-
-            subRow.className = "custom-row";
-            subRowUrl.className = "sub-row-url";
-            subRowSize.className = "sub-row-size";
-
-            subRowUrl.innerText = record.url;
-            subRowTabId.innerText = tab;
-            subRowSize.innerText = record.size;
-            subRowEmission.innerText = record.cumulativeEmission;
-
-            subRow.appendChild(document.createElement("span"));
-            subRow.appendChild(document.createElement("span"));
-            subRow.appendChild(subRowUrl);
-            subRow.appendChild(subRowSize);
-            subRow.appendChild(subRowEmission);
-
-            rowPanel.appendChild(subRow);
-          }
-        });
-
-        tableRow.children[3].innerText = totalSize;
-        tableRow.children[4].innerText = findEmission(totalSize);
-      }
-    });
+    if(totalDataMatrix.length < 2) {
+      totalDataMatrix.push(totalData)
+    }else {
+      totalDataMatrix[0] = totalDataMatrix[1]
+      totalDataMatrix[1] = totalData
+    }
   });
 }
 function getData() {
@@ -214,11 +242,59 @@ function getData() {
 
 Plotly.newPlot('chart',[{ y:[getData()],type:'line' }]);
 
+function getTotalEmission() {
+  if(totalDataMatrix.length >=2 || !((totalDataMatrix[1] - totalDataMatrix[0])<0)){
+    if ( ((totalDataMatrix[1] - totalDataMatrix[0])) >0)
+      return ((totalDataMatrix[1] - totalDataMatrix[0]))
+    else
+      return 0;
+  }
+    
+  else
+    return 0;
+}
+
+function getData() {
+  return Math.random();
+}  
+
+
+let layout ={
+  title: {
+  text:'Δ Emission',
+  font: {
+  family: 'Times New Roman',
+  size: 24
+  },
+  },
+  xaxis: {
+    title: {
+    text: 'Time',
+    font: {
+    family: 'Courier New, monospace',
+    size: 18,
+    color: '#7f7f7f'
+    }
+    }
+    },
+    yaxis: {
+    title: {
+    text: 'Increase in Emission',
+    font: {
+    family: 'Courier New, monospace',
+    size: 18,
+    color: '#7f7f7f'
+    }
+    }
+}
+}
+
+Plotly.newPlot('chart',[{ y:[getTotalEmission()],type:'line' }], layout);
 var cnt = 0;
 
 setInterval(function(){
 
-  Plotly.extendTraces('chart',{ y:[[getData()]]}, [0]);
+  Plotly.extendTraces('chart',{ y:[[getTotalEmission()]]}, [0]);
   cnt++;
   if(cnt > 500) {
       Plotly.relayout('chart',{
