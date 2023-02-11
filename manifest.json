@@ -1,0 +1,16 @@
+{
+    "manifest_version": 3,
+    "name": "Data Transfer Monitor",
+    "version": "1.0",
+    "description": "Shows the total amount of data transferred on the active tab",
+    "permissions": [
+      "debugger",
+      "activeTab",
+      "tabs"
+    ],
+    "action": {
+      "default_popup": "popup.html"
+    }
+  }
+  
+  

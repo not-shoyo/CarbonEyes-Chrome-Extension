@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #totalSize {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <p>Total size of data transferred: <span id="totalSize">0</span> bytes</p>
+
+  <script>
+    // Listen for the initial loading of a page
+    chrome.devtools.network.onNavigated.addListener(function(url) {
+      // Reset the total size of data transferred
+      var totalSize = 0;
+
+      // Listen for events related to network requests
+      chrome.devtools.network.onRequestFinished.addListener(function(request) {
+        // Increment the total size of data transferred
+        totalSize += request.response.bodySize;
+      });
+
+      // Listen for the completion of a page load
+      chrome.devtools.network.onLoadFinished.addListener(function(info) {
+        // Update the display of the total size of data transferred
+        document.getElementById("totalSize").innerText = totalSize;
+      });
+    });
+  </script>
+</body>
+</html>
