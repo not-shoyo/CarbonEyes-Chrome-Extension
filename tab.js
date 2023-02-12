@@ -28,3 +28,4 @@ setInterval(() => {
   var data = JSON.stringify({ size: getDataTransferredTillNow(), url: window.location.href });
   sendMessageToBackgroundScript(data);
 }, 1000);
+ 
