@@ -222,7 +222,7 @@ function refreshData() {
         rowClassification.style.color = "red";
       } else if (emiPerTab > 0.5) {
         rowClassification.innerText = "Semi Green";
-        rowClassification.style.color = "yellow";
+        rowClassification.style.color = "orange";
       } else {
         rowClassification.innerText = "Green";
         rowClassification.style.color = "green";
