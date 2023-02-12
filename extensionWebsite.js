@@ -142,8 +142,8 @@ function refreshData() {
     }
 
     //for plotting into pie chart
-    var contribArray = []
-    var domainLabelArray = []
+    var contribArray = [];
+    var domainLabelArray = [];
 
     rowIndex = 1;
     finalData.forEach((domainToData) => {
@@ -269,8 +269,7 @@ function refreshData() {
     }
 
     //set emmissions thing to document
-    document.getElementById("totalEmmisions").innerText = totalData + "g"
-
+    document.getElementById("totalEmmisions").innerText = totalData + "g";
 
     // var data = [{
     //   values: contribArray,
@@ -278,42 +277,43 @@ function refreshData() {
     //   type: 'pie'
     // }];
 
-    finalData.forEach((domainToData)=>{
-      contribArray.push(domainToData.size / totalData )
-      domainLabelArray.push(domainToData.domain)
-    })
+    finalData.forEach((domainToData) => {
+      contribArray.push(domainToData.size / totalData);
+      domainLabelArray.push(domainToData.domain);
+    });
 
-    console.log(contribArray, domainLabelArray, finalData)
-    var data = [{
-      values: contribArray,
-      labels: domainLabelArray,
-      domain: {column: 0},
-      name: 'GHG Emissions',
-      hoverinfo: 'label+percent',
-      hole: .4,
-      type: 'pie'
-    }]
-    
-    
+    console.log(contribArray, domainLabelArray, finalData);
+    var data = [
+      {
+        values: contribArray,
+        labels: domainLabelArray,
+        domain: { column: 0 },
+        name: "GHG Emissions",
+        hoverinfo: "label+percent",
+        hole: 0.4,
+        type: "pie",
+      },
+    ];
+
     var layout = {
-      title: 'Your Carbon Emissions Distributions accross websites',
+      title: "Your Carbon Emissions Distributions accross websites",
       annotations: [
         {
           font: {
-            size: 20
+            size: 20,
           },
           showarrow: false,
-          text: 'CO2',
+          text: "CO2",
           x: 0.5,
-          y: 0.5
-        }
+          y: 0.5,
+        },
       ],
       height: 400,
       width: 600,
       showlegend: false,
     };
 
-    Plotly.newPlot('donut', data, layout);
+    Plotly.newPlot("donut", data, layout);
 
     if (totalDataMatrix.length < 2) {
       totalDataMatrix.push(totalData);

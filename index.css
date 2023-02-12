@@ -6,6 +6,17 @@
 
 body {
   padding: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.flex-row-container {
+  display: flex;
+  flex-direction: row;
+}
+
+#chart {
+  height: 400px;
 }
 
 .custom-table {
