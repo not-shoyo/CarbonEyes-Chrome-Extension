@@ -15,11 +15,18 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous" />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Chango&family=Libre+Caslon+Display&family=Major+Mono+Display&family=Merriweather:wght@300&display=swap"
+      rel="stylesheet" />
+
     <title>CarbonEyes</title>
   </head>
   <body
     style="
       background-image: url('images/polution.jpeg');
+      background-image: linear-gradient(black, black, black);
       background-repeat: no-repeat;
       background-attachment: fixed;
       background-size: cover;
@@ -28,12 +35,21 @@
     <div class="container h-100" style="background-image: linear-gradient(white, white, white); background-color: white">
       <h1 class="text-center mb-5">A peek into your Emissions</h1>
 
-      <h2 class="text-center">Total CO2 Emmissions :</h2>
+      <h2 class="text-center">Your Total CO2 Emmissions :</h2>
       <h3 class="text-center" id="totalEmmisions">-</h3>
+
       <div class="flex-row-container">
         <span id="chart"></span>
         <span id="donut"></span>
       </div>
+
+      <p id="preaching">
+        The internet has had a significant impact on carbon emissions, both positive and negative. On one hand, the internet has enabled people to
+        communicate and work remotely, reducing the need for travel and therefore reducing greenhouse gas emissions. On the other hand, the energy
+        consumption of the internet has grown dramatically in recent years, contributing to the overall increase in carbon emissions. As such with
+        this tool we hope to help you utilize the internet in a more sustainable way, so that we can help mitigate its negative impact on the
+        environment and help to create a more sustainable future.
+      </p>
 
       <div class="custom-table" id="table" styles="width:1400px">
         <div id="header-row" class="custom-row">

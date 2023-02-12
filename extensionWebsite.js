@@ -350,7 +350,6 @@ let layout = {
   },
   xaxis: {
     title: {
-      text: "Time",
       font: {
         family: "Courier New, monospace",
         size: 18,

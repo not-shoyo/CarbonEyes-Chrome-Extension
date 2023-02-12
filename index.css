@@ -9,6 +9,19 @@ body {
   align-items: center;
 }
 
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Times New Roman", Times, serif;
+}
+
+h1 {
+  font-family: "Chango", cursive;
+  font-family: "Major Mono Display", monospace;
+  text-decoration: underline #131313;
+}
+
 .flex-row-container {
   display: flex;
   flex-direction: row;
@@ -16,6 +29,13 @@ body {
 
 #chart {
   height: 400px;
+}
+
+#preaching {
+  font-family: "Chango", cursive;
+  font-family: "Libre Caslon Display", serif;
+  font-family: "Major Mono Display", monospace;
+  font-family: "Merriweather", serif;
 }
 
 .custom-table {
