@@ -48,3 +48,8 @@ body {
 #emissions {
   margin-bottom: auto;
 }
+
+#logo {
+  vertical-align: middle;
+  margin: 0px 125px 24px;
+}

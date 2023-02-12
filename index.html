@@ -17,24 +17,31 @@
 
     <title>CarbonEyes</title>
   </head>
-  <body>
-    <div class="container">
-      <h1 class="text-center mb-5">A peak into your emissions</h1>
+  <body
+    style="
+      background-image: url('images/polution.jpeg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+      height: 100vh;
+    ">
+    <div class="container h-100" style="background-image: linear-gradient(white, white, white); background-color: white">
+      <h1 class="text-center mb-5">A peek into your Emissions</h1>
 
-      <h3 class="text-center">Total CO2 Emmissions : <span id="totalEmmisions">-</span></h3>
+      <h2 class="text-center">Total CO2 Emmissions :</h2>
+      <h3 class="text-center" id="totalEmmisions">-</h3>
       <div class="flex-row-container">
         <span id="chart"></span>
         <span id="donut"></span>
       </div>
-      <span class="form-check">
-        <input class="form-check-input" type="checkbox" id="flexCheckDefault" />
-        <label class="form-check-label" for="flexCheckDefault"> Rank by Emmissions </label>
-      </span>
 
-      <div class="custom-table" id="table" styles="width:1350px">
+      <div class="custom-table" id="table" styles="width:1400px">
         <div id="header-row" class="custom-row">
           <button type="button" class="" id="clearHistory">Clear History</button>
-          <span>#</span>
+          <span class="form-check">
+            <input style="margin-left: 3px" class="form-check-input" type="checkbox" id="flexCheckDefault" />
+            <label class="form-check-label" for="flexCheckDefault">Rank by Emmissions </label>
+          </span>
           <span>Website Name</span>
           <span>Data Transfer</span>
           <span>Total Emission</span>
