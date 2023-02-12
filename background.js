@@ -25,3 +25,4 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   //sendResponse({ message: "Hello from the background script!" });
   //chrome.runtime.sendMessage({ message: stringData });
 });
+ 

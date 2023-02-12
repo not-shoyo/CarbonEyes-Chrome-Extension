@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Data Transfer Monitor",
+  "name": "Carbon Eyes",
   "version": "1.0",
   "description": "Shows the total amount of data transferred on the active tab",
   "permissions": ["debugger", "activeTab", "tabs", "scripting", "storage"],

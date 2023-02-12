@@ -11,3 +11,4 @@ window.onload = () => {
     window.open("index.html", "_blank"); 
   });
 };
+ 
