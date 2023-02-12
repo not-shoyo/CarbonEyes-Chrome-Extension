@@ -41,6 +41,10 @@ body {
   margin-bottom: 3px;
 }
 
+.danger-button {
+  background-color: #dc3545;
+}
+
 .custom-row > * {
   flex: 1;
   text-align: center;
