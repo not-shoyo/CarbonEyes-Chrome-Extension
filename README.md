@@ -6,7 +6,7 @@
 Video demonstration can be found [here](https://drive.google.com/file/d/1N4sDaqi0SSdcY0UGafsXf2HUmv0BDQWN/view?usp=sharing).
 
 
-Extension which calculates total Carbon Emission using data transferred from various websites visited using **local storage**.
+A Chrome Extension which calculates total Carbon Emission using data transferred from various websites visited using **local storage**.
 
 
 
