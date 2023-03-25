@@ -26,19 +26,19 @@ It consists of a popup for quick values and an extended website with detailed in
 
 Shows the Data Transferred for the current website and also the emission caused by the current website
 
-To get Additional Information about the emission caused by the user. Click on “See Your Stats”
+To get Additional Information about the emission caused by the user. Click on the “_See Your Stats_” button
 
 ### **Webpage**
 
 ![](Aspose.Words.58f915f2-c4fe-4c01-957a-b510e86d2850.003.png)
 
-It consists of the **all time total** Co2 Emission by the user until he/she decides to use the “Clear History” button 
+It consists of the **all time total** Co2 Emission by the user until he/she decides to use the “_Clear History_” button 
 
-There are 2 graphs on the webpage. The Live line chart shows the change in emission vs time whereas the live donut graph shows the percentage of Co2 Emitted by each domain.
+There are 2 graphs on the webpage. The **live** line chart shows the change in emission vs time whereas the live donut graph shows the percentage of Co2 Emitted by **each domain**.
 
-Also there is a feature to expand different domains and see which domain specific sessions cost more carbon emission.
+Also there is a feature to expand different domains and see which domain specific **sessions / tabs** cause more carbon emission.
 
-The domains can also be ranked on the basis of “Emission” to see most to least contribution towards carbon footprint.
+The domains can also be **ranked** on the basis of Emission to see most to least contribution towards carbon footprint.
 
 The Extended Website also shows which domain is Green, Semi Green and Not Green depending on the **average** of total carbon emission from a domain by the number of sessions ( in this case tabs ) contributing to the specific domain.
 
