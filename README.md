@@ -46,5 +46,5 @@ The Extended Website also shows which domain is Green, Semi Green and Not Green 
 
 ___
 
-From the inception of the idea to the implementation of the extension, we have kept in mind the unseen effects of data transfer through our browsers and have designed & developed **CarbonEyes** to minimize its own emissions. We believe the extension can play a crucial role in helping other developers make websites cleaner and help internet users be more wary of their own impact on the planet. 
+From the inception of the idea to the implementation of the extension, we have kept in mind the unseen effects of data transfer through our browsers and have designed & developed **CarbonEyes** to minimize its own emissions as well. We believe the extension can play a crucial role in helping other developers make websites cleaner and help internet users be more wary of their own impact on the planet. 
 
